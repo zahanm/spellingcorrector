@@ -1,9 +1,36 @@
 
 import sys
+import random
+import itertools
 import cPickle as pickle
+
+from collections import Counter
 
 training_corpus_loc = './data/corpus/'
 edit1s_loc = './data/edit1s.txt'
+
+def walk_pairs():
+  """
+  `itertools` is a module with useful iteration functions like izip( .. )
+  The `numbers[1:]` is an example of list slices
+  """
+  numbers = range(10)
+  for tup in itertools.izip( numbers[:-1], numbers[1:] ):
+    print(tup)
+
+def count_ints():
+  """
+  Counter is a specialized dictionary optimized for keeping counts
+  A notable difference is that the count for a missing item is zero (rather than raise a KeyError)
+  Read up on it here: http://docs.python.org/library/collections.html#counter-objects
+  """
+  counts = Counter()
+  for i in xrange(100000):
+    num = random.randint(10)
+    counts[ num ] += 1
+  assert( sum(counts.itervalues()) == 100000 )
+  uniquenums = set(counts)
+  return counts
 
 def read_edit1s():
   """
