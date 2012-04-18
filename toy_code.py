@@ -1,6 +1,7 @@
 
 import random
 import itertools
+import cPickle as pickle
 
 from collections import Counter
 
@@ -20,10 +21,10 @@ def count_ints():
   Read up on it here: http://docs.python.org/library/collections.html#counter-objects
   """
   counts = Counter()
-  for i in xrange(100000):
-    num = random.randint(10)
+  for i in xrange(10000):
+    num = random.randint(0, 10)
     counts[ num ] += 1
-  assert( sum(counts.itervalues()) == 100000 )
+  assert( sum(counts.itervalues()) == 10000 )
   uniquenums = set(counts)
   return counts
 
@@ -44,3 +45,5 @@ def unserialize_data(fname):
 
 if __name__ == '__main__':
   print('Toy code')
+  walk_pairs()
+  print( count_ints() )

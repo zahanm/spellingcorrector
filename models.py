@@ -1,6 +1,5 @@
 
 import sys
-import cPickle as pickle
 
 training_corpus_loc = './data/corpus/'
 edit1s_loc = './data/edit1s.txt'
