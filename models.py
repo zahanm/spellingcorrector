@@ -1,8 +1,25 @@
 
 import sys
+import os
+import os.path
 
 training_corpus_loc = './data/corpus/'
 edit1s_loc = './data/edit1s.txt'
+
+def scan_corpus():
+  """
+  Scans through the training corpus and counts how many lines of text there are
+  """
+  for sub_dir in os.listdir( training_corpus_loc ):
+    print >> sys.stderr, 'processing dir: ' + sub_dir
+    for fname in os.listdir( os.path.join( training_corpus_loc, sub_dir ) ):
+      with open( os.path.join( training_corpus_loc, sub_dir, fname ) ) as f:
+        num_lines = 0
+        for line in f:
+          # remember to remove the trailing \n
+          line = line.rstrip()
+          num_lines += 1
+        print >> sys.stderr, 'Number of lines in ' + fname + ' is ' + str(num_lines)
 
 def read_edit1s():
   """
