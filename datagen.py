@@ -4,6 +4,18 @@ from __future__ import print_function
 import sys
 import os
 import gzip
+import itertools
+
+def assemble_edit1s(clean_fname, misspelled_fname):
+  edit1s = []
+  # [ .. , ( misspelled, clean ), .. ]
+  with open(clean_fname) as clean:
+    with open(misspelled_fname) as misspelled:
+      for line_clean, line_misspelled in itertools.izip(clean, misspelled):
+        edit1s.append( (line_misspelled.rstrip(), line_clean.rstrip()) )
+  with gzip.open('data/edit1s.txt.gz', 'wb') as out:
+    for tup in edit1s:
+      out.write( "{0}\t{1}\n".format(tup[0], tup[1]) )
 
 def zipupfolder(folder):
   with gzip.open( folder + '.gz', 'wb' ) as out:
@@ -22,6 +34,7 @@ def iter_dirs(meta_folder):
     zipupfolder(folder)
 
 if __name__ == '__main__':
-  if len(sys.argv) == 2:
-    meta_folder = sys.argv[1]
-    iterdirs(meta_folder)
+  if len(sys.argv) == 3:
+    clean_edit1s = sys.argv[1]
+    misspelled_edit1s = sys.argv[2]
+    assemble_edit1s(clean_edit1s, misspelled_edit1s)
