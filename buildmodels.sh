@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-# ./buildmodels.sh <input-dir>
+# ./buildmodels.sh <training corpus dir> <training edit1s file>
 
-python models.py $1
+python models.py $1 $2
