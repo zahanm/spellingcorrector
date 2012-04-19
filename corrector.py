@@ -1,12 +1,17 @@
 
 import sys
 
-queries_loc = './data/dev/queries.txt'
-gold_loc = './data/dev/gold.txt'
+queries_loc = './data/queries.txt'
+gold_loc = './data/gold.txt'
 
 alphabet = "abcdefghijklmnopqrstuvwxyz0123546789&$+_' "
 
 def read_query_data():
+  """
+  both files match with corresponding queries on each line
+  the data/gold.txt file has results in the format
+  [ .. , (correct, google), .. ]
+  """
   queries = []
   correct = []
   google = []

@@ -6,9 +6,10 @@ import os
 import gzip
 import itertools
 
+from random import random
+
 def assemble_query_data(clean_fname, misspelled_fname, google_fname):
   # want to build up queries = [ .. , (misspelled, clean, google), .. ]
-  queries = []
   clean = []
   misspelled = []
   google = []
@@ -26,6 +27,17 @@ def assemble_query_data(clean_fname, misspelled_fname, google_fname):
       # will throw an error if it doesn't exist
       i = misspelled.index(corrupt)
       google[i] = attempt.strip()
+  with open('./data/queries.txt', 'w') as queries:
+    with open('./data/gold.txt', 'w') as gold:
+      with open('./data/test.txt', 'w') as test:
+        for i in xrange(len(clean)):
+          if random() < 0.5:
+            # dev set
+            queries.write( misspelled[i] + '\n' )
+            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
+          else:
+            # test set
+            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
   return (misspelled, clean, google)
 
 def assemble_edit1s(clean_fname, misspelled_fname):
