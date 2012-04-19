@@ -19,10 +19,14 @@ def assemble_query_data(clean_fname, misspelled_fname, google_fname):
     for line in misspelled_f:
       misspelled.append( line.rstrip() )
   assert( len(clean) == len(misspelled) )
+  google = [ None ] * len(clean)
   with open(google_fname) as google_f:
     for line in google_f:
-      a, b = line.rstrip().split(':')
-        query_results.append( (clean.rstrip(), misspelled.rstrip()) )
+      corrupt, attempt = line.rstrip().split(':')
+      # will throw an error if it doesn't exist
+      i = misspelled.index(corrupt)
+      google[i] = attempt.strip()
+  return (misspelled, clean, google)
 
 def assemble_edit1s(clean_fname, misspelled_fname):
   edit1s = []
@@ -52,7 +56,5 @@ def iter_dirs(meta_folder):
     zipupfolder(folder)
 
 if __name__ == '__main__':
-  if len(sys.argv) == 3:
-    clean_edit1s = sys.argv[1]
-    misspelled_edit1s = sys.argv[2]
-    assemble_edit1s(clean_edit1s, misspelled_edit1s)
+  if len(sys.argv) == 4:
+    assemble_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
