@@ -9,7 +9,10 @@ import itertools
 from random import random
 
 def assemble_query_data(clean_fname, misspelled_fname, google_fname):
-  # want to build up queries = [ .. , (misspelled, clean, google), .. ]
+  """
+  want to build up queries = [ .. , (misspelled, clean, google), .. ]
+  usage: corrupt, clean, google = datagen.assemble_query_data('data/strings_clean.txt', 'data/strings_corrupted.txt', 'data/strings_googlespell.txt')
+  """
   clean = []
   misspelled = []
   google = []
@@ -25,19 +28,30 @@ def assemble_query_data(clean_fname, misspelled_fname, google_fname):
     for line in google_f:
       corrupt, attempt = line.rstrip().split(':')
       # will throw an error if it doesn't exist
+      attempt = attempt.lstrip()
       i = misspelled.index(corrupt)
-      google[i] = attempt.strip()
-  with open('./data/queries.txt', 'w') as queries:
-    with open('./data/gold.txt', 'w') as gold:
-      with open('./data/test.txt', 'w') as test:
-        for i in xrange(len(clean)):
-          if random() < 0.5:
-            # dev set
-            queries.write( misspelled[i] + '\n' )
-            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
-          else:
-            # test set
-            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
+      try:
+        if misspelled[i+1:].index(corrupt):
+          import pdb; pdb.set_trace()
+      except ValueError:
+        pass
+      google[i] = attempt
+  # with open('./data/queries.txt', 'w') as queries:
+  #   with open('./data/gold.txt', 'w') as gold:
+  #     with open('./data/test.txt', 'w') as test:
+  #       for i in xrange(len(clean)):
+  #         if random() < 0.5:
+  #           # dev set
+  #           queries.write( misspelled[i] + '\n' )
+  #           gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
+  #         else:
+  #           # test set
+  #           test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
+  with open('./data/strings_googlereorder.txt', 'w') as goog:
+    for i, l in enumerate(google):
+      if l == None:
+        import pdb; pdb.set_trace()
+      goog.write( l + '\n' )
   return (misspelled, clean, google)
 
 def assemble_edit1s(clean_fname, misspelled_fname):
