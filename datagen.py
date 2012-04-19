@@ -69,6 +69,17 @@ def iter_dirs(meta_folder):
     print( 'Writing to: {0}'.format(folder + '.gz'), file=sys.stderr )
     zipupfolder(folder)
 
+def num_lines(fname):
+  count = 0
+  with gzip.open(fname) as f:
+    for line in f:
+      if line.strip():
+        count += 1
+  print( 'num lines: ' + str(count) )
+  return count
+
 if __name__ == '__main__':
   if len(sys.argv) == 4:
     assemble_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
+  elif len(sys.argv) == 2:
+    num_lines(sys.argv[1])
