@@ -6,6 +6,24 @@ import os
 import gzip
 import itertools
 
+def assemble_query_data(clean_fname, misspelled_fname, google_fname):
+  # want to build up queries = [ .. , (misspelled, clean, google), .. ]
+  queries = []
+  clean = []
+  misspelled = []
+  google = []
+  with open(clean_fname) as clean_f:
+    for line in clean_f:
+      clean.append( line.rstrip() )
+  with open(misspelled_fname) as misspelled_f:
+    for line in misspelled_f:
+      misspelled.append( line.rstrip() )
+  assert( len(clean) == len(misspelled) )
+  with open(google_fname) as google_f:
+    for line in google_f:
+      a, b = line.rstrip().split(':')
+        query_results.append( (clean.rstrip(), misspelled.rstrip()) )
+
 def assemble_edit1s(clean_fname, misspelled_fname):
   edit1s = []
   # [ .. , ( misspelled, clean ), .. ]
