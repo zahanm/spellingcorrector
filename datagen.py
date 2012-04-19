@@ -23,35 +23,23 @@ def assemble_query_data(clean_fname, misspelled_fname, google_fname):
     for line in misspelled_f:
       misspelled.append( line.rstrip() )
   assert( len(clean) == len(misspelled) )
-  google = [ None ] * len(clean)
   with open(google_fname) as google_f:
     for line in google_f:
       corrupt, attempt = line.rstrip().split(':')
-      # will throw an error if it doesn't exist
       attempt = attempt.lstrip()
-      i = misspelled.index(corrupt)
-      try:
-        if misspelled[i+1:].index(corrupt):
-          import pdb; pdb.set_trace()
-      except ValueError:
-        pass
-      google[i] = attempt
-  # with open('./data/queries.txt', 'w') as queries:
-  #   with open('./data/gold.txt', 'w') as gold:
-  #     with open('./data/test.txt', 'w') as test:
-  #       for i in xrange(len(clean)):
-  #         if random() < 0.5:
-  #           # dev set
-  #           queries.write( misspelled[i] + '\n' )
-  #           gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
-  #         else:
-  #           # test set
-  #           test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
-  with open('./data/strings_googlereorder.txt', 'w') as goog:
-    for i, l in enumerate(google):
-      if l == None:
-        import pdb; pdb.set_trace()
-      goog.write( l + '\n' )
+      google.append( attempt )
+  assert( len(google) == len(clean) )
+  with open('./data/queries.txt', 'w') as queries:
+    with open('./data/gold.txt', 'w') as gold:
+      with open('./data/test.txt', 'w') as test:
+        for i in xrange(len(clean)):
+          if random() < 0.5:
+            # dev set
+            queries.write( misspelled[i] + '\n' )
+            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
+          else:
+            # test set
+            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
   return (misspelled, clean, google)
 
 def assemble_edit1s(clean_fname, misspelled_fname):
