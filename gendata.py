@@ -8,10 +8,39 @@ import itertools
 
 from random import random
 
-def assemble_query_data(clean_fname, misspelled_fname, google_fname):
+def pick_unmodified(clean, misspelled, google):
+  with open('./data/queries/clean.txt', 'w') as clean_f:
+    with open('./data/queries/misspelled.txt', 'w') as misspelled_f:
+      with open('./data/queries/google.txt', 'w') as google_f:
+        for i in xrange(len(clean)):
+          if random() < 0.5:
+            # use corrupted query
+            clean_f.write( clean[i] + '\n' )
+            misspelled_f.write( misspelled[i] + '\n' )
+            google_f.write( google[i] + '\n' )
+          else:
+            # use clean query
+            clean_f.write( clean[i] + '\n' )
+            misspelled_f.write( clean[i] + '\n' )
+            google_f.write( clean[i] + '\n' )
+
+def split_train_test(clean, misspelled, google):
+  with open('./data/queries.txt', 'w') as queries:
+    with open('./data/gold.txt', 'w') as gold:
+      with open('./data/test.txt', 'w') as test:
+        for i in xrange(len(clean)):
+          if random() < 0.5:
+            # dev set
+            queries.write( misspelled[i] + '\n' )
+            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
+          else:
+            # test set
+            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
+
+def read_query_data(clean_fname, misspelled_fname, google_fname):
   """
-  want to build up queries = [ .. , (misspelled, clean, google), .. ]
-  usage: corrupt, clean, google = datagen.assemble_query_data('data/strings_clean.txt', 'data/strings_corrupted.txt', 'data/strings_googlespell.txt')
+  want to build up queries = [ .. , (clean, misspelled, google), .. ]
+  usage: clean, misspelled, google = gendata.assemble_query_data('data/strings_clean.txt', 'data/strings_corrupted.txt', 'data/strings_googlespell.txt')
   """
   clean = []
   misspelled = []
@@ -25,22 +54,9 @@ def assemble_query_data(clean_fname, misspelled_fname, google_fname):
   assert( len(clean) == len(misspelled) )
   with open(google_fname) as google_f:
     for line in google_f:
-      corrupt, attempt = line.rstrip().split(':')
-      attempt = attempt.lstrip()
-      google.append( attempt )
+      google.append( line.rstrip() )
   assert( len(google) == len(clean) )
-  with open('./data/queries.txt', 'w') as queries:
-    with open('./data/gold.txt', 'w') as gold:
-      with open('./data/test.txt', 'w') as test:
-        for i in xrange(len(clean)):
-          if random() < 0.5:
-            # dev set
-            queries.write( misspelled[i] + '\n' )
-            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
-          else:
-            # test set
-            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
-  return (misspelled, clean, google)
+  return (clean, misspelled, google)
 
 def assemble_edit1s(clean_fname, misspelled_fname):
   edit1s = []
@@ -80,6 +96,8 @@ def num_lines(fname):
 
 if __name__ == '__main__':
   if len(sys.argv) == 4:
-    assemble_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
+    clean, misspelled, google = read_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
+    import pdb; pdb.set_trace()
+    # pick_unmodified( clean, misspelled, google )
   elif len(sys.argv) == 2:
     num_lines(sys.argv[1])
