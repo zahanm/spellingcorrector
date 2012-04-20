@@ -4,10 +4,7 @@ import os.path
 import gzip
 from glob import iglob
 
-training_corpus_loc = './data/corpus/'
-edit1s_loc = './data/edit1s.txt.gz'
-
-def scan_corpus():
+def scan_corpus(training_corpus_loc):
   """
   Scans through the training corpus and counts how many lines of text there are
   """
