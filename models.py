@@ -8,7 +8,7 @@ def scan_corpus(training_corpus_loc):
   """
   Scans through the training corpus and counts how many lines of text there are
   """
-  for block_fname in iglob( os.path.join( training_corpus_loc, '*.*' ) ):
+  for block_fname in iglob( os.path.join( training_corpus_loc, '*.gz' ) ):
     print >> sys.stderr, 'processing dir: ' + block_fname
     with gzip.open( block_fname ) as f:
       num_lines = 0
