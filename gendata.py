@@ -9,9 +9,9 @@ import itertools
 from random import random
 
 def pick_unmodified(clean, misspelled, google):
-  with open('./data/queries/clean.txt', 'w') as clean_f:
-    with open('./data/queries/misspelled.txt', 'w') as misspelled_f:
-      with open('./data/queries/google.txt', 'w') as google_f:
+  with open('data/queries/clean.txt', 'w') as clean_f:
+    with open('data/queries/misspelled.txt', 'w') as misspelled_f:
+      with open('data/queries/google.txt', 'w') as google_f:
         for i in xrange(len(clean)):
           if random() < 0.5:
             # use corrupted query
@@ -25,9 +25,9 @@ def pick_unmodified(clean, misspelled, google):
             google_f.write( clean[i] + '\n' )
 
 def split_train_test(clean, misspelled, google):
-  with open('./data/queries.txt', 'w') as queries:
-    with open('./data/gold.txt', 'w') as gold:
-      with open('./data/test.txt', 'w') as test:
+  with open('data/queries.txt', 'w') as queries:
+    with open('data/gold.txt', 'w') as gold:
+      with open('data/test.txt', 'w') as test:
         for i in xrange(len(clean)):
           if random() < 0.5:
             # dev set
@@ -51,7 +51,7 @@ def reorder_clean_google(clean, misspelled, bad_google):
       google[i] = attempt.lstrip()
     if not google[i].strip():
       import pdb; pdb.set_trace()
-  with open('./data/queries/newgoogle.txt', 'w') as out:
+  with open('data/queries/newgoogle.txt', 'w') as out:
     for attempt in google:
       out.write( attempt + '\n' )
 
