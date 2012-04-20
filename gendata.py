@@ -25,17 +25,23 @@ def pick_unmodified(clean, misspelled, google):
             google_f.write( clean[i] + '\n' )
 
 def split_train_test(clean, misspelled, google):
-  with open('data/final/queries.txt', 'w') as queries:
-    with open('data/final/gold.txt', 'w') as gold:
-      with open('data/final/test.txt', 'w') as test:
-        for i in xrange(len(clean)):
-          if random() < 0.5:
-            # dev set
-            queries.write( misspelled[i] + '\n' )
-            gold.write( "{0}\t{1}\n".format( clean[i], google[i]) )
-          else:
-            # test set
-            test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
+  with open('data/dev/queries.txt', 'w') as dev_queries:
+    with open('data/dev/gold.txt', 'w') as dev_gold:
+      with open('data/dev/google.txt', 'w') as dev_google:
+        with open('data/test/queries.txt', 'w') as test_queries:
+          with open('data/test/gold.txt', 'w') as test_gold:
+            with open('data/test/google.txt', 'w') as test_google:
+              for i in xrange(len(clean)):
+                if random() < 0.5:
+                  # dev set
+                  dev_queries.write( misspelled[i] + '\n' )
+                  dev_gold.write( clean[i] + '\n' )
+                  dev_google.write( google[i] + '\n' )
+                else:
+                  # test set
+                  test_queries.write( misspelled[i] + '\n' )
+                  test_gold.write( clean[i] + '\n' )
+                  test_google.write( google[i] + '\n' )
 
 def reorder_clean_google(clean, misspelled, bad_google):
   google = [ None ] * len(misspelled)
@@ -117,6 +123,7 @@ if __name__ == '__main__':
     clean, misspelled, google = read_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
     # import pdb; pdb.set_trace()
     # pick_unmodified( clean, misspelled, google )
-    reorder_clean_google(clean, misspelled, google)
+    split_train_test(clean, misspelled, google)
+    print( 'done' )
   elif len(sys.argv) == 2:
     num_lines(sys.argv[1])
