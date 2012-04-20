@@ -1,8 +1,9 @@
 
 import sys
 
-queries_loc = './data/queries.txt'
-gold_loc = './data/gold.txt'
+queries_loc = 'data/queries.txt'
+gold_loc = 'data/gold.txt'
+google_loc = 'data/google.txt'
 
 alphabet = "abcdefghijklmnopqrstuvwxyz0123546789&$+_' "
 
