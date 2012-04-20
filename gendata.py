@@ -37,6 +37,24 @@ def split_train_test(clean, misspelled, google):
             # test set
             test.write( "{0}\t{1}\t{2}\n".format( misspelled[i], clean[i], google[i]) )
 
+def reorder_clean_google(clean, misspelled, bad_google):
+  google = [ None ] * len(misspelled)
+  for g in bad_google:
+    try:
+      q, attempt = g.split(':')
+    except ValueError:
+      import pdb; pdb.set_trace()
+    i = misspelled.index(q)
+    if not attempt:
+      google[i] = misspelled[i]
+    else:
+      google[i] = attempt.lstrip()
+    if not google[i].strip():
+      import pdb; pdb.set_trace()
+  with open('./data/queries/newgoogle.txt', 'w') as out:
+    for attempt in google:
+      out.write( attempt + '\n' )
+
 def read_query_data(clean_fname, misspelled_fname, google_fname):
   """
   want to build up queries = [ .. , (clean, misspelled, google), .. ]
@@ -97,7 +115,8 @@ def num_lines(fname):
 if __name__ == '__main__':
   if len(sys.argv) == 4:
     clean, misspelled, google = read_query_data(sys.argv[1], sys.argv[2], sys.argv[3])
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     # pick_unmodified( clean, misspelled, google )
+    reorder_clean_google(clean, misspelled, google)
   elif len(sys.argv) == 2:
     num_lines(sys.argv[1])
