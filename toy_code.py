@@ -1,7 +1,7 @@
 
 import random
 import itertools
-import cPickle as pickle
+import marshal
 
 from collections import Counter
 
@@ -33,7 +33,7 @@ def serialize_data(data, fname):
   Writes `data` to a file named `fname`
   """
   with open(fname, 'wb') as f:
-    pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+    marshal.dump(data, f)
 
 def unserialize_data(fname):
   """
@@ -41,7 +41,7 @@ def unserialize_data(fname):
   IMPORTANT: Only call pickle.load( .. ) on a file that was written to using pickle.dump( .. )
   """
   with open(fname, 'rb') as f:
-    return pickle.load(f)
+    return marshal.load(f)
 
 if __name__ == '__main__':
   print('Toy code')
