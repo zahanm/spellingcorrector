@@ -12,19 +12,19 @@ def read_query_data():
   all three files match with corresponding queries on each line
   """
   queries = []
-  correct = []
+  gold = []
   google = []
   with open(queries_loc) as f:
     for line in f:
       queries.append(line.rstrip())
   with open(gold_loc) as f:
     for line in f:
-      correct.append(line.rstrip())
+      gold.append(line.rstrip())
   with open(google_loc) as f:
     for line in f:
       google.append(line.rstrip())
-  assert( len(queries) == len(correct) and len(correct) == len(google) )
-  return (queries, correct, google)
+  assert( len(queries) == len(gold) and len(gold) == len(google) )
+  return (queries, gold, google)
 
 if __name__ == '__main__':
   print(sys.argv)
