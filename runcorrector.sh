@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-# ./corrector.sh <uniform | emperical> <queries file>
+# ./corrector.sh <dev | test> <uniform | emperical> <queries file>
 
-python corrector.py $1 $2
+python corrector.py $1 $2 $3
