@@ -25,9 +25,9 @@ def pick_unmodified(clean, misspelled, google):
             google_f.write( clean[i] + '\n' )
 
 def split_train_test(clean, misspelled, google):
-  with open('data/queries.txt', 'w') as queries:
-    with open('data/gold.txt', 'w') as gold:
-      with open('data/test.txt', 'w') as test:
+  with open('data/final/queries.txt', 'w') as queries:
+    with open('data/final/gold.txt', 'w') as gold:
+      with open('data/final/test.txt', 'w') as test:
         for i in xrange(len(clean)):
           if random() < 0.5:
             # dev set
